@@ -1,1 +1,27 @@
+package prueba;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+public class Scanner {
+    private final String source;
+    private final List<Token> tokens= new ArrayList<>();
+    private static final Map<String, TipoToken> PalabrasReservadas;
+    
+    static {
+        PalabrasReservadas = new HashMap<>();
+        PalabrasReservadas.put("select", TipoToken.SELECT);
+        PalabrasReservadas.put("from", TipoToken.FROM);
+        PalabrasReservadas.put("distinct", TipoToken.DISTINCT);
+        PalabrasReservadas.put("*",TipoToken.ASTERISCO);
+        PalabrasReservadas.put(",",TipoToken.COMA);
+        PalabrasReservadas.put(".",TipoToken.PUNTO);
+    }
+    public boolean terminal(char c){
+        String caracteres=",.*";
+        return caracteres.indexOf(c)!=-1;
+    }
+    Scanner(String source){
+        this.source=source+" ";
+    }
