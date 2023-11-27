@@ -65,3 +65,63 @@ public class ASDI implements Parser{
                 break;
                }
             }
+           else if(x.equals("A")){
+                if(preanalisis.tipo.name().equals("IDENTIFICADOR")){
+                    stack.pop();
+                    stack.push("A1");
+                    stack.push("A2");
+                    x=stack.peek();
+                }
+                else{
+                    System.out.println("Error: Se esperaba un id");
+                    incorrecto = true;
+                    break;
+                }
+            }
+            else if(x.equals("A1")){
+                if(preanalisis.tipo.name().equals("FROM")){//cadena vacia
+                    stack.pop();
+                    x=stack.peek();
+                }
+                else if(preanalisis.tipo.name().equals("COMA")){
+                    stack.pop();
+                    stack.push("A");
+                    stack.push("COMA");
+                    x=stack.peek();
+                }
+                else{
+                    System.out.println("Error: Se esperaba una ',' o from");
+                    incorrecto = true;
+                    break;
+                }
+            }
+            else if(x.equals("A2")){
+                if(preanalisis.tipo.name().equals("IDENTIFICADOR")){
+                    stack.pop();
+                    stack.push("A3");
+                    stack.push("IDENTIFICADOR");
+                    x=stack.peek();
+                }
+                else{
+                    System.out.println("Error: Se esperaba un id");
+                    incorrecto = true;
+                    break;
+                }
+            }
+            else if(x.equals("A3")){
+                if(preanalisis.tipo.name().equals("FROM")||preanalisis.tipo.name().equals("COMA")){//cadeba vacia
+                    stack.pop();
+                    x=stack.peek();
+                }
+                else if(preanalisis.tipo.name().equals("PUNTO")){
+                    stack.pop();
+                    stack.push("IDENTIFICADOR");
+                    stack.push("PUNTO");
+                    x=stack.peek();
+                }
+                else{
+                    System.out.println("Error: Se esperaba un id o un from o un .");
+                    incorrecto = true;
+                    break;
+                }
+            }
