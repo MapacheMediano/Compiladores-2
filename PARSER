@@ -1,1 +1,5 @@
+package prueba;
 
+public interface Parser {
+   boolean parse(); 
+}
