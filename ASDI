@@ -125,3 +125,78 @@ public class ASDI implements Parser{
                     break;
                 }
             }
+else if(x.equals("T")){
+                if(preanalisis.tipo.name().equals("IDENTIFICADOR")){
+                    stack.pop();
+                    stack.push("T1");
+                    stack.push("T2");
+                    x=stack.peek();
+                }
+                else{
+                    System.out.println("Error: Se esperaba un id");
+                    incorrecto = true;
+                    break;
+                }
+            }
+            else if(x.equals("T1")){
+               if(preanalisis.tipo.name().equals("COMA")){
+                    stack.pop();
+                    stack.push("T");
+                    stack.push("COMA");
+                    x=stack.peek();
+                }
+                else if(preanalisis.tipo.name().equals("EOF")){
+                    stack.pop();
+                    x=stack.peek();
+                }
+                else{
+                    System.out.println("Error: Se esperaba una ,");
+                    incorrecto = true;
+                    break;
+                }
+            }
+            else if(x.equals("T2")){
+               if(preanalisis.tipo.name().equals("IDENTIFICADOR")){
+                    stack.pop();
+                    stack.push("T3");
+                    stack.push("IDENTIFICADOR");
+                    x=stack.peek();
+                }
+                else{
+                    System.out.println("Error: Se esperaba un id");
+                    incorrecto = true;
+                    break;
+                }
+            }
+            else if(x.equals("T3")){
+               if(preanalisis.tipo.name().equals("COMA")){
+                    stack.pop();
+                    x=stack.peek();
+                }
+                else if(preanalisis.tipo.name().equals("IDENTIFICADOR")){
+                    stack.pop();
+                    stack.push("IDENTIFICADOR");
+                    x=stack.peek();
+                }
+                else if(preanalisis.tipo.name().equals("EOF")){
+                    stack.pop();
+                    x=stack.peek();
+                }
+                else{
+                    System.out.println("Error: Se esperaba un id");
+                    incorrecto = true;
+                    break;
+                }
+            }
+            else{
+                System.out.println("Se ha encontrado errores: ");
+                incorrecto = true;
+                break;
+            }
+        }
+    }
+    public boolean parse(){
+        analisis();
+        return !incorrecto;
+    }
+}
