@@ -1,1 +1,67 @@
+package prueba;
+import java.util.List;
+import java.util.Stack;
 
+public class ASDI implements Parser{
+    private int i = 0;
+    private boolean incorrecto = false;
+    private Token preanalisis;
+    private final List<Token> tokens;
+    public ASDI(List<Token> tokens){
+        this.tokens=tokens;
+        preanalisis=this.tokens.get(i);
+    }
+    public void analisis(){
+        Stack<String> stack = new Stack<>();//aquí vamos a crear la pila
+        stack.push("EOF");//en esta parte del código estamos llenando la pila con fin de cadena
+        stack.push("Q");//en esta parte del código se llena la pila con el primer elemento
+        String x=stack.peek();//aquí estamos apuntando el tope de la pila
+        while (x!="EOF") {
+            if(x.equals(preanalisis.tipo.name())){//x está apuntando un terminal de la cadena metida
+                stack.pop();//Aquí estamos eliminando lo que esta arriba de la pila
+                x=stack.peek();//apuntamos en lo mas alto de la pila
+                i++;
+                preanalisis=this.tokens.get(i);
+            }
+            else if(x.equals("Q")){
+                stack.pop();
+                stack.push("T");
+                stack.push("FROM");
+                stack.push("D");
+                stack.push("SELECT");
+                x=stack.peek();
+            }
+            else if(x.equals("D")){
+               if(preanalisis.tipo.name().equals("DISTINCT")){stack.pop();
+                    stack.push("P");
+                    stack.push("DISTINCT");
+                    x=stack.peek();
+               }
+               else if(preanalisis.tipo.name().equals("ASTERISCO")||preanalisis.tipo.name().equals("IDENTIFICADOR")){
+                    stack.pop();
+                    stack.push("P");
+                    x=stack.peek();
+               }
+               else{
+                System.out.println("Error: Se esperaba un id o * o distinct");
+                incorrecto = true; // Marca que se ha encontrado un error
+                break;
+               }
+            }
+            else if(x.equals("P")){
+                if(preanalisis.tipo.name().equals("ASTERISCO")){
+                    stack.pop();
+                    stack.push("ASTERISCO");
+                    x=stack.peek();
+                }
+                else if(preanalisis.tipo.name().equals("IDENTIFICADOR")){
+                    stack.pop();
+                    stack.push("A");
+                    x=stack.peek();
+                }
+                else{
+                System.out.println("Error: Se esperaba un id o *");
+                incorrecto = true;
+                break;
+               }
+            }
