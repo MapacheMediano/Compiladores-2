@@ -90,3 +90,21 @@ public class Scanner {
         tokens.add(new Token(TipoToken.EOF, lexema));
         return tokens;
     }
+
+    List<Token> scanTokens() {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+}
+
+public enum TipoToken {
+    IDENTIFICADOR,
+
+    //PALABRAS RESERVADAS
+    SELECT, FROM, DISTINCT,
+
+    //CARACTERES
+    COMA, PUNTO, ASTERISCO,
+
+    //FINAL DE CADENA
+    EOF
+}
